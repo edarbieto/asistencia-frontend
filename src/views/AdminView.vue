@@ -147,31 +147,38 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Nombre de usuario</th>
-          <th scope="col">Roles</th>
           <th scope="col">Acciones</th>
+          <th scope="col">Registro del día</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="user in users">
           <td scope="row" class="align-middle">{{ user.id }}</td>
           <td class="align-middle">{{ user.username }}</td>
-          <td>
-            <ul>
-              <li v-for="role in user.roles">{{ role.name }}</li>
-            </ul>
-          </td>
           <td class="align-middle">
             <button
-              class="btn btn-warning btn-sm me-2"
-              data-bs-toggle="modal"
-              data-bs-target="#editUserModal"
-              @click="selectUser(user.id)"
+              class="btn btn-danger btn-sm me-2"
+              @click="deleteUser(user.id)"
             >
-              <i class="fa-regular fa-pen-to-square"></i>
-            </button>
-            <button class="btn btn-danger btn-sm" @click="deleteUser(user.id)">
               <i class="fa-regular fa-trash-can"></i>
             </button>
+            <button
+              class="btn btn-success btn-sm"
+              @click="registerUser(user.id)"
+            >
+              <i class="fa-regular fa-calendar-check"></i>
+            </button>
+          </td>
+          <td class="align-middle">
+            <ul>
+              <li
+                v-for="att in userAttendance(user.id)"
+                :class="`fs-6 ${att.onTime ? '' : 'text-danger fw-bold'}`"
+              >
+                {{ att.type === "IN" ? "Entrada" : "Salida" }} -
+                {{ att.createdAt }}
+              </li>
+            </ul>
           </td>
         </tr>
       </tbody>
@@ -182,6 +189,7 @@
 <script>
 import { userApi } from "../api/user.api";
 import { authApi } from "../api/auth.api";
+import { attendanceApi } from "../api/attendance.api";
 
 export default {
   data() {
@@ -196,6 +204,7 @@ export default {
         username: "",
         roles: [],
       },
+      attendances: [],
     };
   },
   methods: {
@@ -225,10 +234,19 @@ export default {
         roles: [],
       };
     },
+    userAttendance(userId) {
+      return this.attendances.filter(
+        (attendance) => attendance.userId === userId
+      );
+    },
     async createNewUser() {
       const toCreateUser = this.newUser;
       toCreateUser.password = toCreateUser.username;
       await authApi.signup(toCreateUser);
+      this.$router.go();
+    },
+    async registerUser(userId) {
+      await attendanceApi.register(userId);
       this.$router.go();
     },
   },
@@ -240,7 +258,10 @@ export default {
   },
   async beforeMount() {
     const users = await userApi.getUsers();
+    const attendances = await attendanceApi.getTodayUsers();
     this.users = users;
+    console.log(attendances);
+    this.attendances = attendances;
   },
 };
 </script>

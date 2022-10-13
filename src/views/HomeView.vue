@@ -40,8 +40,8 @@ export default {
   },
   methods: {
     async register() {
-      const type = this.today?.length === 0 ? "IN" : "OUT";
-      const attendance = await attendanceApi.register(type, this.notes);
+      // const type = this.today?.length === 0 ? "IN" : "OUT";
+      // const attendance = await attendanceApi.register(type, this.notes);
       this.$router.go();
     },
   },
