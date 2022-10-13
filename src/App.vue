@@ -70,7 +70,7 @@ const changePassword = async () => {
         <span class="navbar-brand mx-3"
           >- {{ authStore.user?.username }} -</span
         >
-        <RouterLink to="/" class="nav-item nav-link">
+        <!-- <RouterLink to="/" class="nav-item nav-link">
           Marcar asistencia
         </RouterLink>
         <RouterLink
@@ -88,7 +88,7 @@ const changePassword = async () => {
           @click="openChangePassword"
         >
           Cambiar contraseña
-        </a>
+        </a> -->
         <a href="" @click="authStore.logout()" class="nav-item nav-link">
           Salir
         </a>

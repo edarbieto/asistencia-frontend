@@ -29,7 +29,7 @@
               class="form-control mb-3"
               placeholder="Nombre de usuario"
             />
-            <p>Roles</p>
+            <!-- <p>Roles</p>
             <div
               v-for="possibleRole in possibleRoles"
               class="form-check form-check-inline"
@@ -44,7 +44,7 @@
               <label class="form-check-label" :for="possibleRole + 'RoleCheck'">
                 {{ possibleRole }}
               </label>
-            </div>
+            </div> -->
           </div>
           <div class="modal-footer">
             <button
@@ -156,17 +156,18 @@
           <td scope="row" class="align-middle">{{ user.id }}</td>
           <td class="align-middle">{{ user.username }}</td>
           <td class="align-middle">
-            <button
+            <!-- <button
               class="btn btn-danger btn-sm me-2"
               @click="deleteUser(user.id)"
             >
               <i class="fa-regular fa-trash-can"></i>
-            </button>
+            </button> -->
             <button
               class="btn btn-success btn-sm"
               @click="registerUser(user.id)"
             >
               <i class="fa-regular fa-calendar-check"></i>
+              Marcar entrada/salida
             </button>
           </td>
           <td class="align-middle">
@@ -176,7 +177,7 @@
                 :class="`fs-6 ${att.onTime ? '' : 'text-danger fw-bold'}`"
               >
                 {{ att.type === "IN" ? "Entrada" : "Salida" }} -
-                {{ att.createdAt }}
+                {{ new Date(att.createdAt).toLocaleTimeString() }}
               </li>
             </ul>
           </td>
